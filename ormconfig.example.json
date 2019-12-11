@@ -9,5 +9,10 @@
     "logging": true,
     "entities": ["src/entities/**/*.ts"],
     "migrations": ["src/migration/**/*.ts"],
-    "subscribers": ["src/subscriber/**/*.ts"]
+    "subscribers": ["src/subscriber/**/*.ts"],
+    "cli": {
+        "entitiesDir": "src/models",
+        "migrationsDir": "src/migration",
+        "subscribersDir": "src/subcriber"
+    }
 }

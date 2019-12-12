@@ -5,7 +5,8 @@
   "main": "index.tsx",
   "scripts": {
     "dev": "webpack-dev-server --progress --mode development --content-base src/",
-    "pro": "webpack --progress --mode production"
+    "pro": "webpack --progress --mode production",
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,11 @@
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.9.1",
+    "@graphql-codegen/typescript": "1.0.0",
+    "@graphql-codegen/typescript-operations": "1.0.0",
+    "@graphql-codegen/typescript-react-apollo": "1.0.0",
+    "@types/graphql": "^14.5.0",
     "css-loader": "^3.3.0",
     "file-loader": "^5.0.2",
     "style-loader": "^1.0.1",
@@ -33,5 +39,3 @@
     "webpack-dev-server": "^3.9.0"
   }
 }
-
-

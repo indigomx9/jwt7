@@ -1,10 +1,23 @@
 import React from "react";
+import { useUsersQuery } from "../generated/graphql";
 
 export const Home = () => {
+    const {data} = useUsersQuery({fetchPolicy: "network-only"});
+
+    if (!data) {
+        return <section>Loading...</section>
+    }
+
     return (
         <React.Fragment>
             <h1 className="banner">Home</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto maiores libero sequi recusandae ratione asperiores temporibus quod doloremque. Sed quaerat inventore ipsam. Iure possimus commodi deserunt pariatur nostrum cupiditate blanditiis!</p>
+            <main>users: 
+                <ul>
+                    {data.users.map((user) => (
+                        <li key={user.id}>{user.id} {user.email}</li>
+                    ))}
+                </ul>
+            </main>
         </React.Fragment>
     );
 };

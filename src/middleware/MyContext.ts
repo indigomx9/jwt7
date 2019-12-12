@@ -2,7 +2,10 @@ import express from "express";
 
 export interface MyContext {
     req: express.Request,
-    res: express.Response
+    res: express.Response,
+    payload?: {
+        userId: string,
+    };
 };
 
 

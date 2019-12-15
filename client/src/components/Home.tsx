@@ -14,7 +14,7 @@ export const Home = () => {
             <main>users: 
                 <ul>
                     {data.users.map((user) => (
-                        <li key={user.id}>{user.id} {user.email}</li>
+                        <li key={user.id}>{user.id}, {user.email}</li>
                     ))}
                 </ul>
             </main>

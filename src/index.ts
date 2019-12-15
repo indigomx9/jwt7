@@ -2,6 +2,7 @@ import "reflect-metadata";
 import "dotenv/config";
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./graphql/UserResolver";
@@ -14,6 +15,12 @@ import { sendRefreshToken } from "./middleware/sendRefreshToken";
 (async () => {
     await createConnection();
     const app: express.Application = express();
+    app.use(
+        cors({
+            origin: "http://localhost:8080",
+            credentials: true
+        })
+    );
     app.use(cookieParser());
 
     // To refresh a JWT.
@@ -47,7 +54,8 @@ import { sendRefreshToken } from "./middleware/sendRefreshToken";
         }),
         context: ({ req, res }) => ({ req, res })
     });
-    apolloServer.applyMiddleware({ app });
+
+    apolloServer.applyMiddleware({ app, cors: false });
 
     const port = process.env.PORT || 9000;
     app.listen(port, () => {

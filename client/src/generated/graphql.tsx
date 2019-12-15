@@ -9,6 +9,7 @@ export type Scalars = {
 
 export type LoginResponse = {
   accessToken: Scalars['String'],
+  user: User,
 };
 
 export type Mutation = {
@@ -38,6 +39,7 @@ export type Query = {
   hello: Scalars['String'],
   bye: Scalars['String'],
   users: Array<User>,
+  me?: Maybe<User>,
 };
 
 export type User = {
@@ -61,7 +63,12 @@ export type LoginMutationVariables = {
 };
 
 
-export type LoginMutation = ({ __typename?: 'Mutation' } & { login: ({ __typename?: 'LoginResponse' } & Pick<LoginResponse, 'accessToken'>) });
+export type LoginMutation = ({ __typename?: 'Mutation' } & { login: ({ __typename?: 'LoginResponse' } & Pick<LoginResponse, 'accessToken'> & { user: ({ __typename?: 'User' } & Pick<User, 'id' | 'email'>) }) });
+
+export type MeQueryVariables = {};
+
+
+export type MeQuery = ({ __typename?: 'Query' } & { me: Maybe<({ __typename?: 'User' } & Pick<User, 'id' | 'email'>)> });
 
 export type RegisterMutationVariables = {
   email: Scalars['String'],
@@ -102,12 +109,28 @@ export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
     accessToken
+    user {
+      id
+      email
+    }
   }
 }
     `;
 
 export function useLoginMutation(baseOptions?: ReactApolloHooks.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
   return ReactApolloHooks.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+};
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    email
+  }
+}
+    `;
+
+export function useMeQuery(baseOptions?: ReactApolloHooks.QueryHookOptions<MeQueryVariables>) {
+  return ReactApolloHooks.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
 };
 export const RegisterDocument = gql`
     mutation Register($email: String!, $password: String!) {

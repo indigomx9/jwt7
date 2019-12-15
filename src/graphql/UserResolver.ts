@@ -7,11 +7,14 @@ import { Resolver, Query, Mutation, Arg, ObjectType, Field,
     Ctx, UseMiddleware, Int } from "type-graphql";
 import { sendRefreshToken } from "../middleware/sendRefreshToken";
 import { getConnection } from "typeorm";
+import { verify } from "jsonwebtoken";
 
 @ObjectType()
 class LoginResponse {
     @Field()
     accessToken: string
+    @Field(() => User)
+    user: User;
 };
 
 @Resolver()
@@ -60,7 +63,8 @@ export class UserResolver {
         // Login Successful
         sendRefreshToken(res, createRefreshToken(user));
         return {
-            accessToken: createAccessToken(user)
+            accessToken: createAccessToken(user),
+            user
         }
     }
 
@@ -73,12 +77,30 @@ export class UserResolver {
     @UseMiddleware(isAuth)
     bye(@Ctx() {payload}: MyContext) {
         console.log(payload);
-        return `Your use id is: ${payload!.userId}`
+        return `User id: ${payload!.userId}`
     }
 
     @Query(() => [User])
     users() {
         return User.find();
+    }
+
+    @Query(() => User, { nullable: true })
+    me(
+        @Ctx() context: MyContext
+    ) {
+        const authorization = context.req.headers["authorization"];
+        if (!authorization) {
+            return null;
+        }
+        try {
+            const token = authorization.split(" ")[1]
+            const payload: any = verify(token, process.env.ACCESS_TOKEN_SECRET!)
+            return User.findOne(payload.userId)
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
     }
 };
 

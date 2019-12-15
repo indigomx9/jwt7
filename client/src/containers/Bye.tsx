@@ -1,5 +1,6 @@
 import React from "react";
 import { useByeQuery } from "../generated/graphql";
+import { Me } from "./Me";
 
 export const Bye = () => {
     const { data, loading, error } = useByeQuery();
@@ -16,7 +17,8 @@ export const Bye = () => {
 
     return (
         <React.Fragment>
-            <main>{data.bye}</main>
+            <main><h2>{data.bye}</h2></main>
+            <Me />
         </React.Fragment>
     );
 };

@@ -16,6 +16,7 @@ export type Mutation = {
   register: Scalars['Boolean'],
   revokeRefreshTokensForUser: Scalars['Boolean'],
   login: LoginResponse,
+  logout: Scalars['Boolean'],
 };
 
 
@@ -64,6 +65,11 @@ export type LoginMutationVariables = {
 
 
 export type LoginMutation = ({ __typename?: 'Mutation' } & { login: ({ __typename?: 'LoginResponse' } & Pick<LoginResponse, 'accessToken'> & { user: ({ __typename?: 'User' } & Pick<User, 'id' | 'email'>) }) });
+
+export type LogoutMutationVariables = {};
+
+
+export type LogoutMutation = ({ __typename?: 'Mutation' } & Pick<Mutation, 'logout'>);
 
 export type MeQueryVariables = {};
 
@@ -119,6 +125,15 @@ export const LoginDocument = gql`
 
 export function useLoginMutation(baseOptions?: ReactApolloHooks.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
   return ReactApolloHooks.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+};
+export const LogoutDocument = gql`
+    mutation Logout {
+  logout
+}
+    `;
+
+export function useLogoutMutation(baseOptions?: ReactApolloHooks.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+  return ReactApolloHooks.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
 };
 export const MeDocument = gql`
     query Me {

@@ -68,6 +68,11 @@ export class UserResolver {
         }
     }
 
+    @Mutation(() => Boolean)
+    async logout(@Ctx() { res }: MyContext) {
+        sendRefreshToken(res, "");
+    }
+
     @Query(() => String)
     async hello() {
         return "JWT Token GraphQL"

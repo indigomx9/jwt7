@@ -5,7 +5,8 @@ export const sendRefreshToken = (
     token: string
 ) => {
     res.cookie("jid", token, {
-        httpOnly: true
+        httpOnly: true,
+        path: "/refresh_token"
     });
 };
 
